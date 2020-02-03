@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "669715641776",
+    "firebase_url": "https://cashit-9163c.firebaseio.com",
+    "project_id": "cashit-9163c",
+    "storage_bucket": "cashit-9163c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669715641776:android:0ee8d8408fb99f3ccf5275",
+        "android_client_info": {
+          "package_name": "com.example.cashit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669715641776-mjrj0ogarv0ucoghkbe0q0ut118h4uco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cashit",
+            "certificate_hash": "fd430651440cee4f168394bfd90b478d3da471f6"
+          }
+        },
+        {
+          "client_id": "669715641776-7rftg661k5nlldjecf0p1mlf7fpk9pm5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACPZpGqepDfDujcEm6GIvqzOZQKiha8QU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669715641776-7rftg661k5nlldjecf0p1mlf7fpk9pm5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
