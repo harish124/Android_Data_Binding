@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bkg"
+        android:fitsSystemWindows="true"
 
         tools:context=".MainActivity">
 
@@ -33,6 +34,7 @@
 
         <LinearLayout
             android:id="@+id/ll3"
+            android:fitsSystemWindows="true"
             android:layout_below="@+id/inp"
             android:layout_marginTop="25dp"
             android:layout_centerHorizontal="true"
@@ -253,9 +255,11 @@
 
         <LinearLayout
             android:id="@+id/linearLayout2"
+            android:fitsSystemWindows="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/ll3">
 
