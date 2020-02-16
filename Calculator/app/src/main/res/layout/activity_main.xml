@@ -5,8 +5,8 @@
             name="viewModel"
             type="com.example.calculator.view_model.MainActivityViewModel" />
     </data>
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,15 +29,7 @@
 
             android:inputType="number"
             android:lines="3"/>
-        <TextView
-            android:id="@+id/dummyTxt"
-            android:layout_below="@+id/inp"
 
-            android:text="@={viewModel.resText}"
-            android:textSize="34dp"
-            android:textColor="#ffffff"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:id="@+id/ll3"
@@ -274,7 +266,7 @@
                 android:background="@drawable/b_btn"
                 android:text="%"
                 android:textColor="#ffffff"
-                android:onClick="@{()->viewModel.setBtnText(viewModel.arrayList.get(15))}"
+                android:onClick="@{()->viewModel.setBtnText(viewModel.arrayList.get(14))}"
                 android:textSize="34dp"
                 android:textStyle="bold" />
             <Button

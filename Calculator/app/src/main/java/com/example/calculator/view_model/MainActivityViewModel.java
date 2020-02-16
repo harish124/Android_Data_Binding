@@ -18,8 +18,6 @@ public class MainActivityViewModel extends ViewModel {
     private long valLength;
 
     private MutableLiveData<String> resText;
-
-
     private MutableLiveData<String> currOpr;
     private String prevOpr;
 
@@ -96,47 +94,75 @@ public class MainActivityViewModel extends ViewModel {
         Log.d(tag,"Text = "+txt);
 
 
+
         if(txt.equalsIgnoreCase("C")){
-            inpText.setValue("");
-            resText.setValue("0");
-            obj.setVal2(0.0);
-            obj.setVal1(0.0);
+            reset();
 
             Log.d(tag,"val1 = "+obj.getVal1()+"\nval2 = "+obj.getVal2());
+            currOpr.setValue("C");
+        } else if (txt.equals("=")) {
+            computeResult(prevOpr);
+            if (!inpText.getValue().equals("Can\'t divide by zero")) {
+                inpText.setValue("" + obj.getTot());
+            }
+            Log.d(tag, "Zero = " + inpText.getValue());
+            currOpr.setValue("=");
+            prevOpr = txt;
+        } else if (txt.equals("%")) {
+            //obj.setTot(Double.parseDouble(inpText.getValue().toString())/100.0);
+            String temp = "" + (Double.parseDouble(inpText.getValue().toString()) / 100.0);
+            Log.d(tag, Double.parseDouble(inpText.getValue().toString()) + "% = " + obj.getTot());
+            inpText.setValue(temp);
+            //prevOpr=txt;
         }
-        else if(txt.equals("=")){
 
-            obj.setVal2(Double.parseDouble(inpText.getValue()));
-
-            Log.d(tag,""+currOpr.getValue());
-            performMath();
-
-            currOpr.setValue(txt);
-
-        }
         else if(txt.equals("+")||
                 txt.equals("-")||
                 txt.equals("*")||
-                txt.equals("/")){
+                txt.equals("/")
+        ) {
 
-            currOpr.setValue(txt);
-            Log.d(tag,"val1 = "+obj.getVal1()+"\nval2 = "+obj.getVal2());
-            obj.setVal1(Double.parseDouble(inpText.getValue()));    //get inp from inpText
-            obj.setVal2(obj.getVal2()+obj.getVal1());
-            Log.d(tag,"val1 = "+obj.getVal1()+"\nval2 = "+obj.getVal2());
+            if (obj.isInitState()) {
+                currOpr.setValue(txt);
+                if (inpText.getValue().equals("Can\'t divide by zero") ||
+                        inpText.getValue().isEmpty()) {
+                    reset();
+                    return;
 
-            obj.setVal1(-9999.0);   //acts as signal
-            inpText.setValue((""+(int)(obj.getVal2())).trim());
-
-            obj.setVal1(-9999.0);   //acts as signal . This line is required for some reason, i have added it to fix some logical issue
-            Log.d(tag,"val1 = "+obj.getVal1()+"\nval2 = "+obj.getVal2());
-            valLength=inpText.getValue().length();
-
-
-
+                }
+                obj.setTot(Double.parseDouble(inpText.getValue().toString()));
+                Log.d(tag, "inpText = " + inpText.getValue().toString());
+                prevOpr = txt;
+                obj.setInitState(false);
+            } else {
+                if (isArithmeticOpr(currOpr.getValue()) == 1) {
+                    currOpr.setValue(txt);
+                    prevOpr = txt;
+                    Log.d(tag, "currOpr is also arithmetic");
+                    return;
+                }
+                currOpr.setValue(txt);
+                computeResult(prevOpr);
+                prevOpr = txt;
+            }
         }
+
         else{
+            if (prevOpr.equals("+") ||
+                    prevOpr.equals("-") ||
+                    prevOpr.equals("*") ||
+                    prevOpr.equals("/") ||
+                    prevOpr.equals("%")) {
+                if (currOpr.getValue().equals("+") ||
+                        currOpr.getValue().equals("-") ||
+                        currOpr.getValue().equals("*") ||
+                        currOpr.getValue().equals("/") ||
+                        currOpr.getValue().equals("%")) {
+                    inpText.setValue("");
+                }
+            }
             btnTextHelperFn(txt);
+            currOpr.setValue(txt);
         }
 
     }
@@ -151,48 +177,81 @@ public class MainActivityViewModel extends ViewModel {
         else {
             inpText.setValue(getInpText().getValue().trim()+txt);
         }
+
     }
 
-    public void performMath(){
-        Log.d(tag,"performMath");
-        if(prevOpr.equals("+"))
-        {
-            inpText.setValue(""+((int)(obj.computeRes(1))));
+    void computeResult(String prvOpr) {
+        Log.d(tag, "prvOpr = " + prvOpr);
+        if (inpText.getValue().isEmpty()) {
+            return;
         }
-        else if(prevOpr.equals("-"))
+        if (inpText.getValue().equals("Can\'t divide by zero"))
         {
-            inpText.setValue(""+((int)(obj.computeRes(2))));
+            reset();
+            return;
         }
-        else if(prevOpr.equals("*"))
+        if (prvOpr.equals("+")) {
+            Log.d(tag, "inpText = " + inpText.getValue().toString());
+            obj.setTot(obj.getTot() + Double.parseDouble(inpText.getValue().toString()));
+            inpText.setValue("" + obj.getTot());
+        }
+
+        if (prvOpr.equals("-")) {
+            obj.setTot(obj.getTot() - Double.parseDouble(inpText.getValue().toString()));
+            inpText.setValue("" + obj.getTot());
+        }
+
+        if (prvOpr.equals("*")) {
+            obj.setTot(obj.getTot() * Double.parseDouble(inpText.getValue().toString()));
+            inpText.setValue("" + obj.getTot());
+        }
+
+        if (prvOpr.equals("/")) {
+            obj.setVal1(Double.parseDouble(inpText.getValue().toString()));
+            if (obj.getVal1() != 0.0) {
+                obj.setTot(obj.getTot() / obj.getVal1());
+                inpText.setValue("" + obj.getTot());
+            } else {
+                inpText.setValue("Can't divide by zero");
+                obj.setInitState(true);
+                obj.setTot(0.0);
+            }
+        }
+        if (prvOpr.equals("%"))
         {
-            inpText.setValue(""+((int)(obj.computeRes(3))));
+//            obj.setTot(Double.parseDouble(inpText.getValue().toString())/100.0);
+//            Log.d(tag,Double.parseDouble(inpText.getValue().toString())+"% = "+obj.getTot());
+//            inpText.setValue(""+obj.getTot());
         }
-        else if(prevOpr.equals("/"))
+
+
+        if (prvOpr.equals("="))
         {
-            inpText.setValue(""+((int)(obj.computeRes(4))));
+            prevOpr = currOpr.getValue();
         }
-        resText.setValue(inpText.getValue());
+
     }
 
-    public void performResult(){
+    public int isArithmeticOpr(String opr) {
+        if (opr.equals("+") ||
+                opr.equals("-") ||
+                opr.equals("*") ||
+                opr.equals("/") ||
+                opr.equals("%"))
+        {
+            Log.d(tag, "isArithmeticOpr = 1");
+            return 1;
 
-        Log.d(tag,"performResult");
-        obj.setVal2(Double.parseDouble(inpText.getValue()));
-        if(prevOpr.equals("+"))
-        {
-            resText.setValue(""+((int)(obj.computeRes(1))));
         }
-        else if(prevOpr.equals("-"))
-        {
-            resText.setValue(""+((int)(obj.computeRes(2))));
-        }
-        else if(prevOpr.equals("*"))
-        {
-            resText.setValue(""+((int)(obj.computeRes(3))));
-        }
-        else if(prevOpr.equals("/"))
-        {
-            resText.setValue(""+((int)(obj.computeRes(4))));
-        }
+        Log.d(tag, "isArithmeticOpr = 0");
+        return 0;
     }
+
+    void reset() {
+        obj.setInitState(true);
+        obj.setTot(0.0);
+        inpText.setValue("");
+    }
+
+
 }

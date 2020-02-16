@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class MainActivityModel {
     private ArrayList<String> arrayList;
 
-    private double val1,val2;
+    private double val1, val2, tot = 0.0;
+    private boolean initState = true;
 
     public MainActivityModel(Double val1, Double val2) {
         this.val1 = val1;
@@ -31,6 +32,22 @@ public class MainActivityModel {
         val2=0.0;
     }
 
+    public boolean isInitState() {
+        return initState;
+    }
+
+    public void setInitState(boolean initState) {
+        this.initState = initState;
+    }
+
+    public double getTot() {
+        return tot;
+    }
+
+    public void setTot(double tot) {
+        this.tot = tot;
+    }
+
     public ArrayList<String> getArrayList() {
         return arrayList;
     }
@@ -51,27 +68,5 @@ public class MainActivityModel {
         this.val2 = val2;
     }
 
-    public double computeRes(int currOpr)
-    {
-        switch (currOpr){
-            case 1:
-                return (val1+val2);
-            case 2:
-                return (val1-val2);
 
-            case 3:
-                return (val1*val2);
-            case 4:
-                if(val2!=0)
-                {
-
-                    return (val1/val2);
-                }
-                else{
-                    return 999999999999.0;
-                }
-        }
-
-        return 0.0;
-    }
 }
