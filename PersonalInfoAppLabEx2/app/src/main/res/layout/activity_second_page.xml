@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+        <data>
+            <variable
+                name="vm"
+                type="com.example.personalinfoapplabex2.viewmodel.MainActivityViewModel" />
+        </data>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TableRow>
+                        <TextView
+                            android:text="Name"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="@{vm.name}"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:text="DOB"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="@{vm.dob}"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:text="Address"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="@{vm.address}"
+                            android:lines="4"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+
+                            android:text="Email"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="@{vm.email}"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+
+                            android:text="Phno"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="@{vm.phno}"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:text="Gender"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Male"/>
+                    </TableRow>
+                    <TableRow>
+                        <TextView
+                            android:text="Languages Known: "/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:text="Tamil,English"/>
+                    </TableRow>
+                </TableLayout>
+
+            </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
