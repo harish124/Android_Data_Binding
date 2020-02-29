@@ -1,6 +1,9 @@
 package com.example.alarmclock.viewmodel;
 
+import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,6 +15,7 @@ public class MainActivityViewModel extends ViewModel {
     private CountDownTimer countDownTimer;
     private MutableLiveData<Boolean> timerRunning;
     private MutableLiveData<Integer> seconds, minutes;
+    private Vibrator vibrator;
 
     public void init() {
         if (timerText == null) {
@@ -28,7 +32,16 @@ public class MainActivityViewModel extends ViewModel {
             seconds = new MutableLiveData<>();
             minutes.setValue(0);
             seconds.setValue(0);
+
         }
+    }
+
+    public Vibrator getVibrator() {
+        return vibrator;
+    }
+
+    public void setVibrator(Vibrator vibrator) {
+        this.vibrator = vibrator;
     }
 
     public long getTimerLeftInMilliseconds() {
@@ -90,7 +103,13 @@ public class MainActivityViewModel extends ViewModel {
 
             @Override
             public void onFinish() {
+                timerText.setValue("0 : 00");
 
+                if (Build.VERSION.SDK_INT >= 26) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(2000, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    vibrator.vibrate(2000);
+                }
             }
         }.start();
 
