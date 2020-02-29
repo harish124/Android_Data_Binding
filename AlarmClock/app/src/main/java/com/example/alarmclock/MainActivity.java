@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void initOnclick() {
         binding.edit.setOnClickListener(this);
     }
-    
+
     void configNumPicker() {
         binding.numPicker.setMinValue(1);
         binding.numPicker.setMaxValue(60);
