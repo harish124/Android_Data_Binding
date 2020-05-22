@@ -1,110 +1,232 @@
 package com.example.annapoorna;
 
-import android.content.Context;
-import android.net.Uri;
+import android.Manifest;
+import android.app.ActionBar;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PassengerMap.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PassengerMap#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.example.annapoorna.databinding.ActivityPassengerBinding;
+import com.example.annapoorna.databinding.FragmentPassengerMapBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.UUID;
+
+import print.Print;
+
+import static android.content.Context.LOCATION_SERVICE;
+
+
 public class PassengerMap extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private View pview;
+    private GoogleMap mMap;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private Print p;
+    private FragmentPassengerMapBinding binding;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private FirebaseDatabase fdb;
+    private DatabaseReference mRef;
+    private Location passloc;
+    void init(View v){
+        p=new Print(v.getContext());
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(v.getContext());
 
-    private OnFragmentInteractionListener mListener;
+        fdb=FirebaseDatabase.getInstance();
+        mRef=fdb.getReference("RequestProduct");
 
+
+
+
+        binding.requestBtn.setOnClickListener((btnView)->{
+            makeRequest(mRef);
+        });
+
+    }
+
+    private void makeRequest(DatabaseReference mRef) {
+        HashMap<String,String> obj=new HashMap<>();
+        obj.put("Lat",""+passloc.getLatitude());
+        obj.put("Long",""+passloc.getLongitude());
+
+        mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(UUID.randomUUID().toString())
+                .setValue(obj).addOnSuccessListener((aVoid)->{
+            p.sprintf("Request Made Successfully!");
+        }).addOnFailureListener((exception)->{
+            p.fprintf("Error in making Request!\nError: "+exception.getMessage());
+        });
+    }
     public PassengerMap() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PassengerMap.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PassengerMap newInstance(String param1, String param2) {
-        PassengerMap fragment = new PassengerMap();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    void hideBottomAppBar() {
+        ActionBar ab=getActivity().getActionBar();
+        if(ab!=null)
+        {
+            ab.hide();
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_passenger_map, container, false);
+        //pview=inflater.inflate(R.layout.fragment_passenger_map, container, false);
+
+        hideBottomAppBar();
+        binding= DataBindingUtil.inflate
+                (inflater,R.layout.fragment_passenger_map,container,false);
+        pview=binding.getRoot();
+        init(pview);
+        hideBottomAppBar();
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync((googleMap)->{
+            //onMapReady
+            mMap = googleMap;
+
+
+            locationManager=(LocationManager)pview.getContext().getSystemService(LOCATION_SERVICE);
+
+            locationListener= new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    configureMarker(new LatLng(location.getLatitude(),location.getLongitude()));
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+
+            if(Build.VERSION.SDK_INT<23)
+            {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        0,0,locationListener);
+            }
+            else if(Build.VERSION.SDK_INT>=23)
+            {
+                if(ContextCompat.checkSelfPermission(pview.getContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED)
+                {
+                    requestPermissions(new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },1000);
+                }
+                else {
+                    if (ContextCompat.checkSelfPermission(pview.getContext(),Manifest.permission.ACCESS_FINE_LOCATION)
+                            ==PackageManager.PERMISSION_GRANTED) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                                0,0,locationListener);
+
+                        getLastLocation();
+                        //p.sprintf("Lat = "+location.getLatitude());
+
+                    }
+                }
+            }
+
+        });
+
+        return pview;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private void configureMarker(LatLng obj) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(obj);
+        markerOptions.title("You are here!");
+        //markerOptions.snippet("This is awesome");
+        markerOptions.snippet(obj.latitude + "," + obj.longitude);
+
+
+        CircleOptions circleOptions = new CircleOptions();
+        circleOptions.strokeColor(Color.BLUE);
+        circleOptions.radius(10);
+        circleOptions.center(obj);
+        circleOptions.strokeWidth(20.0f);
+
+        mMap.addMarker(markerOptions);
+        mMap.addCircle(circleOptions);
+
+        CameraUpdate cameraUpdate= CameraUpdateFactory.newLatLngZoom(obj,17.25f);
+        mMap.moveCamera(cameraUpdate);
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode==1000)
+        {
+            if(grantResults.length>0)
+            {
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED)
+                {
+
+                    if (ContextCompat.checkSelfPermission(pview.getContext(),Manifest.permission.ACCESS_FINE_LOCATION)
+                            ==PackageManager.PERMISSION_GRANTED) {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                                0,0,locationListener);
+
+                        getLastLocation();
+                    }
+                }
+            }
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    void getLastLocation()
+    {
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener((location)->{
+            if (location!=null) {
+                passloc=location;
+                configureMarker(new LatLng(location.getLatitude(),location.getLongitude()));
+            }
+        }).addOnFailureListener((e)-> {
+            p.fprintf("Failed to retrieve Locaiton\nError: " + e.getMessage());
+        });
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

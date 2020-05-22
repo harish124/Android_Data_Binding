@@ -1,4 +1,4 @@
-package com.example.cashit;
+package com.example.annapoorna;
 
 
 import android.Manifest;
@@ -29,7 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.cashit.models.ProductDetails;
+import com.example.annapoorna.models.ProductDetails;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -121,14 +121,14 @@ public class PostFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         changeVisibilityOfTextFields(View.INVISIBLE);
-        hideBottomAppBar();
+        //hideBottomAppBar();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        hideBottomAppBar();
+        //hideBottomAppBar();
         postView = inflater.inflate(R.layout.fragment_post, container, false);
 
         ButterKnife.bind(this, postView);
@@ -138,10 +138,12 @@ public class PostFragment extends Fragment {
     }
 
     void getChoosenImage() {
+        p.sprintf("Camera pressed 3");
         Intent intent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/png");
         startActivityForResult(intent, 2000);
+        p.sprintf("Camera pressed 4");
     }
 
 
@@ -176,9 +178,12 @@ public class PostFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 1000) {
+
             if (grantResults.length > 0) {
+
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
                     getChoosenImage();
                 }
             }
@@ -200,11 +205,13 @@ public class PostFragment extends Fragment {
     public void onViewClicked(View v) {
         switch (v.getId()) {
             case R.id.postImageView:
+
                 if (Build.VERSION.SDK_INT >= 23 &&
                         ActivityCompat.checkSelfPermission
                                 (v.getContext(),
                                         Manifest.permission.READ_EXTERNAL_STORAGE)
                                 != PackageManager.PERMISSION_GRANTED) {
+
 
                     requestPermissions(new String[]
                             {

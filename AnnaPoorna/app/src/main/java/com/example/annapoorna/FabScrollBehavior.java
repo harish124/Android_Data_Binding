@@ -1,18 +1,14 @@
-package com.example.cashit;
+package com.example.annapoorna;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FabScrollBehavior extends FloatingActionButton.Behavior
@@ -43,6 +39,6 @@ public class FabScrollBehavior extends FloatingActionButton.Behavior
 
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull FloatingActionButton child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
-        return axes==ViewCompat.SCROLL_AXIS_VERTICAL;
+        return axes== ViewCompat.SCROLL_AXIS_VERTICAL;
     }
 }

@@ -3,10 +3,10 @@
     <data>
         <variable
             name="pd"
-            type="com.example.cashit.models.ProductDetails" />
+            type="com.example.annapoorna.models.ProductDetails" />
         <variable
             name="pdHelper"
-            type="com.example.cashit.viewmodels.ProductRVAdapter2Helper" />
+            type="com.example.annapoorna.view_model.ProductRVAdapter2Helper" />
 
     </data>
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

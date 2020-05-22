@@ -1,4 +1,4 @@
-package com.example.cashit.adapters;
+package com.example.annapoorna.adapters;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,10 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cashit.R;
-import com.example.cashit.databinding.ActivityProductRecyclerViewRow2Binding;
-import com.example.cashit.viewmodels.ProductRVAdapter2Helper;
-import com.example.cashit.models.ProductDetails;
+import com.example.annapoorna.R;
+import com.example.annapoorna.databinding.ActivityProductRecyclerViewRow2Binding;
+import com.example.annapoorna.models.ProductDetails;
+import com.example.annapoorna.view_model.ProductRVAdapter2Helper;
+
 
 import java.util.ArrayList;
 

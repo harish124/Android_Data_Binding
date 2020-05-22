@@ -1,174 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/constraintLayout"
-    android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-    tools:context=".PostFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <ImageView
-        android:id="@+id/postImageView"
-        android:layout_width="235dp"
-        android:layout_height="196dp"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/ic_add_a_photo_black_24dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    android:layout_width="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="502dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
+        android:layout_height="match_parent"
+        android:id="@+id/constraintLayout"
+        android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+        tools:context=".PostFragment">
 
-        android:layout_marginEnd="10dp"
-        android:gravity="fill"
-        android:orientation="vertical"
-        android:padding="20dp"
-        android:visibility="invisible"
-        android:weightSum="4">
+        <!-- TODO: Update blank fragment layout -->
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tl1"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+        <ImageView
+            android:id="@+id/postImageView"
+            android:layout_width="235dp"
+            android:layout_height="196dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/ic_add_a_photo_black_24dp"
+             />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="502dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="80dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="10dp"
 
-            android:layout_weight="0.25">
+            android:layout_marginEnd="10dp"
+            android:gravity="fill"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="invisible"
+            android:weightSum="4">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Product Name"
-                android:lines="1"
-                android:text="iPhone 10" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tl2"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tl1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="4dp"
-            android:layout_weight="0.25">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputLayout2"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Product Description"
-                android:inputType="textMultiLine"
-                android:lines="4"
-                android:text="This is a brand new iPhone 10" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginEnd="4dp"
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tl3"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tl2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="4dp"
-            android:layout_weight="0.25">
+                android:layout_weight="0.25">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputLayout3"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Product Name"
+                    android:lines="1"
+                    android:text="iPhone 10" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Selling Price"
-                android:lines="1"
-                android:text="12400" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_below="@+id/tl1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="0.25">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tl4"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tl3"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="4dp"
-            android:layout_weight="0.25">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Product Description"
+                    android:inputType="textMultiLine"
+                    android:lines="4"
+                    android:text="This is a brand new iPhone 10" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputLayout4"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl3"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Your Phno"
-                android:lines="1"
-                android:text="9876543210" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+                android:layout_below="@+id/tl2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="0.25">
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="56dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Qty"
+                    android:maxLines="1"
+                    android:text="12400" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="2"
-        android:layout_below="@+id/linearLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tl4"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tl3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="0.25">
 
-        <Button
-            android:id="@+id/prevBtn"
-            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Your Phno"
+                    android:lines="1"
+                    android:text="9876543210" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_weight=".5"
-            android:text="Prev"
-            android:textAlignment="center"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:visibility="gone" />
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_margin="20dp"
+            android:padding="20dp"
+            android:layout_below="@+id/linearLayout">
 
-        <Button
-            android:id="@+id/postBtn"
-            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                <Button
+                    android:id="@+id/prevBtn"
+                    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            android:text="Next"
-            android:textAlignment="center"
-            android:textColor="#fff"
-            android:textSize="20dp"
-            android:visibility="visible" />
+                    android:layout_weight="1"
+                    android:text="Prev"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:textSize="20dp"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/postBtn"
+                    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Next"
+                    android:textAlignment="center"
+                    android:textColor="#fff"
+                    android:textSize="20dp"
+                    android:visibility="visible" />
 
 
-    </LinearLayout>
-</RelativeLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</ScrollView>

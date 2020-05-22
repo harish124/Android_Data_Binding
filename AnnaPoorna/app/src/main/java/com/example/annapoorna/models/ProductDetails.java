@@ -1,4 +1,4 @@
-package com.example.cashit.models;
+package com.example.annapoorna.models;
 
 import android.widget.ImageView;
 
@@ -18,7 +18,7 @@ public class ProductDetails {
     public ProductDetails() {
     }
 
-    public ProductDetails(String pname,String prodImage, String datePosted, String company, String description, String cost) {
+    public ProductDetails(String pname, String prodImage, String datePosted, String company, String description, String cost) {
         this.pname=pname;
         this.prodImage = prodImage;
         this.datePosted = datePosted;

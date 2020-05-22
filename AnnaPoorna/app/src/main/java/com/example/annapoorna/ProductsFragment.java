@@ -1,8 +1,7 @@
-package com.example.cashit;
+package com.example.annapoorna;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,19 +12,13 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.cashit.adapters.ProductRecyclerViewAdapter;
-import com.example.cashit.models.ProductDetails;
-import com.example.cashit.my_interfaces.DataLoadListener;
-import com.example.cashit.repositories.Repo;
-import com.example.cashit.viewmodels.ProductsFragmentViewModel;
+import com.example.annapoorna.adapters.ProductRecyclerViewAdapter;
+import com.example.annapoorna.models.ProductDetails;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +37,7 @@ import print.Print;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductsFragment extends Fragment implements DataLoadListener{
+public class ProductsFragment extends Fragment{
 
     @BindView(R.id.prodRecyclerView)
     RecyclerView recyclerView;
@@ -83,7 +75,7 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
     private View prodView;
     private ProductRecyclerViewAdapter adapter;
 
-    private ProductsFragmentViewModel viewModel;
+
     static ProductsFragment instance;
 
 
@@ -115,11 +107,9 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
         firebaseDatabase = FirebaseDatabase.getInstance();
         mReference = firebaseDatabase.getReference("Products");
         p = new Print(v.getContext());
-        s=State.userState;
+        s= State.userState;
         sortState=sortState.randomState;
-        sortDate=DatePosted.randomState;
-        viewModel=ViewModelProviders.of(getActivity())
-                .get(ProductsFragmentViewModel.class);
+        sortDate= DatePosted.randomState;
 
     }
 
@@ -143,75 +133,6 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
         p.sprintf("onCreateView");
         setHasOptionsMenu(true);
 
-//        Repo repo=Repo.getInstance();
-//
-//        repo.init();
-//        if(repo.productListSize()==0)
-//        {
-//            repo.loadProducts();
-//        }
-        viewModel.init();
-        viewModel.getProducts().observe(getActivity(),(fp)->{
-            p.sprintf("Working");
-            for(ProductDetails pr:fp){
-                p.sprintf("Prod = "+pr.getPname());
-                products.add(pr);
-            }
-            adapter.notifyDataSetChanged();
-
-        });
-//        new Handler().postDelayed(new Runnable() {
-//            public void run() {
-//                // yourMethod();
-//                Log.e("Waiting","wait wait");
-//
-//                products.clear();
-//                viewModel.getProducts().observe(ProductsFragment.this,(fp)->{
-//                    for(ProductDetails pr:fp){
-//                        p.sprintf("Prod = "+pr.getPname());
-//                        products.add(pr);
-//                    }
-//                    adapter.notifyDataSetChanged();
-//
-//                });
-//            }
-//        }, 2000);
-
-
-
-
-
-
-
-
-//        valueEventListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                p.sprintf("This is happening again");
-//                ProductDetails productDetails;
-//
-//                products.clear();
-//                for (DataSnapshot users : dataSnapshot.getChildren()) {
-//                    for (DataSnapshot userProd : users.getChildren()) {
-//                        productDetails = userProd.getValue(ProductDetails.class);
-//                        products.add(productDetails);
-//                    }
-//
-//                }
-//                adapter.notifyDataSetChanged();
-//                //recyclerView.setAdapter(adapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                p.fprintf("Read from firebase error");
-//                p.fprintf("Error: " + databaseError.getMessage());
-//                Log.d("FirebaseReadError", databaseError.getMessage());
-//            }
-//        };
-//
-//        mReference.addValueEventListener(valueEventListener);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -231,9 +152,6 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
     }
 
 
-
-
-
     void searchForThisString(String word) {
         //p.sprintf("Word = "+word);
         ValueEventListener searchValueEventListener = new ValueEventListener() {
@@ -242,17 +160,17 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
                 ProductDetails productDetails;
 
                 products.clear();
-                if(s==State.userState)
+                if(s== State.userState)
                 {
                     for (DataSnapshot users : dataSnapshot.getChildren()) {
                         for (DataSnapshot userProd : users.getChildren()) {
                             try {
                                 productDetails = userProd.getValue(ProductDetails.class);
 
-                            if (productDetails.getPname().toLowerCase().contains(word.toLowerCase())) {
-                                //p.sprintf("ProductDetails = "+productDetails.getCost());
-                                products.add(productDetails);
-                            }
+                                if (productDetails.getPname().toLowerCase().contains(word.toLowerCase())) {
+                                    //p.sprintf("ProductDetails = "+productDetails.getCost());
+                                    products.add(productDetails);
+                                }
                             } catch (Exception e) {
                                 Log.d("searchForThisString",e.getMessage());
                             }
@@ -261,7 +179,7 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
 
                     }
                 }
-                if(s==State.globalState)
+                if(s== State.globalState)
                 {
                     //p.fprintf(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                     for (DataSnapshot users : dataSnapshot.getChildren()) {
@@ -299,62 +217,18 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.products_menu,menu);
+        //inflater.inflate(R.menu.products_menu,menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //p.sprintf("Item Clicked "+item.getItemId());
-        switch (item.getItemId())
-        {
-            case R.id.myPosts:
-                sortState=sortState.randomState;
-                sortDate=DatePosted.randomState;
-                //fabClicked();
-                ProductDetails pd=new ProductDetails("android","","today","","","");
-                viewModel.setProducts(pd);
-                p.sprintf("Size = "+viewModel.getProducts().getValue().size());
-                break;
-            case R.id.sortPrice:
-                sortDate=DatePosted.randomState;
-                if(sortState!=sortState.lowToHigh && sortState!=sortState.HighToLow)
-                {
-                    p.sprintf("Sorting Cost Low->High");
-                    Collections.sort(products,(a,b)-> Double.parseDouble(a.getCost().trim())<Double.parseDouble(b.getCost().trim())?-1:Double.parseDouble(a.getCost().trim())==Double.parseDouble(b.getCost().trim())?0:1);
-                    sortState=sortState.HighToLow;
-                }
-                else if(sortState==sortState.HighToLow) {
-                    p.sprintf("Sorting Cost High->Low");
-                    Collections.sort(products,(a,b)-> Double.parseDouble(a.getCost().trim())>Double.parseDouble(b.getCost().trim())?-1:Double.parseDouble(a.getCost().trim())==Double.parseDouble(b.getCost().trim())?0:1);
-                    sortState=sortState.lowToHigh;
-                }
-                adapter.notifyDataSetChanged();
-                break;
-            case 16908332:      //nav Icon manually set in bottom app bar  ;found by printing item.getItemId()
-                sortState=sortState.randomState;
-                Collections.sort(products,(a,b)-> a.getDatePosted().trim().compareTo(b.getDatePosted().trim()));
-
-                if(sortDate!=sortDate.lowToHigh && sortDate!=sortDate.HighToLow)
-                {
-                    p.sprintf("Sorting Date Small->Big");
-                    sortDate=sortDate.HighToLow;
-                }
-                else if(sortDate==sortDate.HighToLow) {
-                    p.sprintf("Sorting Date Big->Small");
-                    Collections.reverse(products);
-                    sortDate=sortDate.lowToHigh;
-                }
-                adapter.notifyDataSetChanged();
-                break;
-            default:return false;
-        }
         return super.onOptionsItemSelected(item);
     }
 
     public void fabClicked()
     {
 
-        FirebaseAuth mAuth=FirebaseAuth.getInstance();
+        FirebaseAuth mAuth= FirebaseAuth.getInstance();
         FirebaseUser mUser=mAuth.getCurrentUser();
         ValueEventListener searchValueEventListener = new ValueEventListener() {
             @Override
@@ -362,11 +236,11 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
                 ProductDetails productDetails = new ProductDetails();
 
                 products.clear();
-                if(s==State.userState)
+                if(s== State.userState)
                 {
                     p.sprintf("Displaying your Posts");
                     products.clear();
-                    s=State.globalState;
+                    s= State.globalState;
                     for (DataSnapshot users : dataSnapshot.getChildren()) {
                         for (DataSnapshot userProd : users.getChildren()) {
                             productDetails = userProd.getValue(ProductDetails.class);
@@ -379,10 +253,10 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
 
                     }
                 }
-                else if(s==State.globalState)
+                else if(s== State.globalState)
                 {
                     p.sprintf("Displaying all Posts");
-                    s=State.userState;
+                    s= State.userState;
                     //p.fprintf(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
                     for (DataSnapshot users : dataSnapshot.getChildren()) {
                         for (DataSnapshot userProd : users.getChildren()) {
@@ -405,14 +279,6 @@ public class ProductsFragment extends Fragment implements DataLoadListener{
         mReference.addListenerForSingleValueEvent(searchValueEventListener);
     }
 
-    @Override
-    public void onProductsFetchedFromFirebase() {
-        p.sprintf("onProducts Fetched From Firebase fragment");
-//        viewModel.getProducts().observe(this,(fetchedProducts)->{
-//            products.clear();
-//            products=fetchedProducts;
-//            adapter.notifyDataSetChanged();
-//        });
-    }
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.cashit.models;
+package com.example.annapoorna.models;
 
 public class Users {
     private String username,pwd;
