@@ -9,5 +9,6 @@ data class User(
     val profile:String="",
     val cover:String="",
     val uid:String="",
-    val status:String=""
+    var status:String="",
+    var lastMsg:String=""
 ):Parcelable

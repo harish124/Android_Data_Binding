@@ -16,6 +16,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.squareup.picasso.Picasso
 import frame_transition.Transition
 import kotlinx.android.synthetic.main.activity_first_screen.*
 import print.Print
@@ -58,17 +59,36 @@ class FirstScreen : AppCompatActivity() {
                 }
 
                 override fun onDataChange(userDetails: DataSnapshot) {
-                    if(userDetails.exists())
-                    {
+                    if(userDetails.exists()) {
                         val user = userDetails.getValue(User::class.java)
-                        Glide.with(this@FirstScreen)
-                            .load(user?.profile)
-                            .centerCrop()
-                            .into(binding!!.imgView)
+                        try {
+                            Glide.with(this@FirstScreen)
+                                .load(user?.profile)
+                                .centerCrop()
+                                .into(binding!!.imgView)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            println("Not a big deal")
+                        }
                     }
                 }
 
             })
+    }
+
+    private fun setStatus(status:String="Offline"){
+        val ref=database.getReference("Users/${mAuth.uid}/status")
+        ref.setValue(status)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setStatus("Online")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        setStatus("Offline")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

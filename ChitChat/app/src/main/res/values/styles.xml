@@ -20,8 +20,7 @@
     <style name="myStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 
 </resources>

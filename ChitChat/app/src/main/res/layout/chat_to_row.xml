@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.024">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/toImg"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -40,7 +40,8 @@
                 android:paddingStart="25dp"
                 android:visibility="visible"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_msg_view"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_to_msg_view"
                 android:maxWidth="240dp" />
 
         </RelativeLayout>

@@ -8,14 +8,13 @@ import android.view.animation.OvershootInterpolator
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.chitchat.adapter.SearchRVAdapter
+import com.example.chitchat.adapter.FragmentChatsRVAdapter
 import com.example.chitchat.R
-import com.example.chitchat.databinding.FragmentSearchBinding
+import com.example.chitchat.databinding.FragmentChatsBinding
 import com.example.chitchat.model.User
+import com.example.chitchat.ui.message_acts.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -27,9 +26,9 @@ import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 import print.Print
 
 
-class FragmentSearch : Fragment() {
+class FragmentChats : Fragment() {
 
-    private var binding:FragmentSearchBinding?=null
+    private var binding:FragmentChatsBinding?=null
 
     private val p=Print(context)
 
@@ -37,7 +36,7 @@ class FragmentSearch : Fragment() {
     private val transition= Transition(context)
     private val database= FirebaseDatabase.getInstance()
     private var mUsers= arrayListOf<User>()
-    private var adapter = SearchRVAdapter(mUsers)
+    private var adapter = FragmentChatsRVAdapter(mUsers)
 
 
     private fun configRecyclerView() {
@@ -61,11 +60,12 @@ class FragmentSearch : Fragment() {
     ): View? {
 
         binding= DataBindingUtil.inflate(inflater,
-            R.layout.fragment_search,
+            R.layout.fragment_chats,
             container, false)
 
         configRecyclerView()
         fetchUsers()
+
 
         binding!!.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -126,6 +126,9 @@ class FragmentSearch : Fragment() {
                         var i=0
                         for(users in usersList.children){
                             val user:User=users?.getValue(User::class.java)?:User("SomethingWentWrong")
+
+
+
                             if(user.uid!=mAuth.currentUser?.uid){
                                 //p?.sprintf("Uname = ${user.uname}")
                                 mUsers.add(user)
@@ -139,5 +142,10 @@ class FragmentSearch : Fragment() {
             })
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        fetchUsers()
+    }
 
 }

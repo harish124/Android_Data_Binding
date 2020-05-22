@@ -3,19 +3,19 @@ package com.example.chitchat.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.example.chitchat.ui.FirstFragment
-import com.example.chitchat.ui.FragmentSearch
-import com.example.chitchat.ui.SecondFragment
+import com.example.chitchat.ui.GroupsFragment
+import com.example.chitchat.ui.FragmentChats
+import com.example.chitchat.ui.SettingsFragment
 
 class FragmentAdapter(fragmentManager:FragmentManager):FragmentPagerAdapter(fragmentManager) {
     override fun getItem(position: Int): Fragment {
         when(position){
-            0->return FragmentSearch()
-            2->return SecondFragment()
-            1->return FragmentSearch()
+            0->return FragmentChats()
+            2->return SettingsFragment()
+            1->return GroupsFragment()
 
         }
-        return FirstFragment()
+        return FragmentChats()
     }
 
     override fun getCount(): Int {
@@ -26,7 +26,7 @@ class FragmentAdapter(fragmentManager:FragmentManager):FragmentPagerAdapter(frag
         when(position){
             0->return "Chats"
             2->return "Settings"
-            1->return "Search"
+            1->return "Groups"
         }
         return ""
     }
